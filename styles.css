@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*--ADD ROOT FOR BTN "START GAME SHOULD BE LIGHT GREEN, LOOSING - PURPLE OR RED(DARK RED OR BRIGHT), WINNING - GOLD, LIGHT YELLOW--*/
+
+body {
+    font-family: 'Tourney', serif;
+    background-color:rgb(248, 238, 238);
+}
+
+div {
+    text-align: center;
+}
+
+button {
+    text-decoration: none; 
+    background-color: transparent;
+    border: none;
+    transition: 0.8s;
+}
+
+.main-heading {
+    font-weight: 400;
+    font-size: 60px;
+    text-align: center;
+    margin-top: 20px;
+    position: relative;
+}
+
+.rock {
+    color: gray;
+    font-weight: 900;
+}
+
+.paper {
+    font-weight: 400;
+}
+
+.scissors {
+    color: #fc5f5f;
+    font-weight: 800;
+}
+
+.start-game-btn {
+    border: 4px;
+    border-style: dashed solid;
+    cursor: pointer;
+    font-size: 36px;
+    font-family: "Tourney", serif;
+    font-weight: 900;
+    padding: 5px 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.8s;
+}   
+
+.start-game-btn:hover{
+    background: rgb(125, 184, 38);   
+}
+
