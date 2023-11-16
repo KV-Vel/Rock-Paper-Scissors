@@ -1,79 +1,127 @@
+const startGameBtn = document.querySelector('.start-game-btn');
+const btnContainer = document.querySelector('.button-container');
+let playersChoice; 
 let playersScore = 0;
+let roundCounterSpan = document.querySelector('.rounds-counter');
+let counterOfRounds = 0;
 let computersScore = 0;
+const gameBtn = document.querySelectorAll('.game-btn'); 
+const aiScore = document.querySelector('.ai-Score');
+const yourScore = document.querySelector('.player-Score');
+const finalResult = document.querySelector('.final-result');
+const paragraph = document.querySelector('.result-info');
+let resultMessage;
 
-function game () {
+/* Starting Game button */
+startGameBtn.addEventListener('click',()=>{
+
+    btnContainer.classList.toggle('button-container');
+
+    // With hitting the Start button, score is reset
+    paragraph.textContent = '';
+    playersScore = 0;
+    computersScore = 0;
+    aiScore.textContent = 0;
+    yourScore.textContent = 0;
+    finalResult.textContent = '';
+    counterOfRounds = 0;
+    roundCounterSpan.textContent = 0;
+});
+
+
+/* Players Choice with starting game */
+gameBtn.forEach ((btn) => {
+
+    btn.addEventListener('click', () => {
+        if (btn.classList.contains('btn-rock')) {
+            playersChoice = 'rock';
+        } else if (btn.classList.contains('btn-paper')) {
+            playersChoice = 'paper';
+        } else if (btn.classList.contains('btn-scissors')) {
+            playersChoice = 'scissors';
+        }
+
+        if (playersScore !=5 && computersScore != 5) game();
+        });
+})
+
+function showRoundResult () {
+    aiScore.textContent = computersScore;
+    yourScore.textContent = playersScore;
+}
+
+const retryBtn = document.querySelector('.retry-btn');
+
+retryBtn.addEventListener('click', () => {
+
+    paragraph.textContent = '';
+    playersScore = 0;
+    computersScore = 0;
+    aiScore.textContent = 0;
+    yourScore.textContent = 0;
+    finalResult.textContent = '';
+    counterOfRounds = 0;
+    roundCounterSpan.textContent = 0;
+})
+
+/* Rock Paper Scissors game */
+function game() {
 
 let computersChoice;
-let playersChoice;
 
 function getComputersChoice () { 
-    // у компьютера 3 варианта выбора 
+
     computersChoice = Math.floor(Math.random() * 3) + 1;   
     
     if (computersChoice == 1) {
-        computersChoice = "rock"
+        computersChoice = 'rock';
     } else if (computersChoice == 2) {
-        computersChoice = "paper"
+        computersChoice = 'paper';
     } else {
-        computersChoice = "scissors"
+        computersChoice = 'scissors';
     }
     return computersChoice
 }
 getComputersChoice()
 
-
-function getPlayersChoice () {
-    return playersChoice = prompt("Choose your weapon", "rock").toLowerCase()    
-}
-getPlayersChoice()
-
 function gameSession (playersChoice, computersChoice) {
 
-    // Можно не давать очки при ничье. Сделано, чтоб ускорить игру
     if (playersChoice == computersChoice) { 
-        ++computersScore;
-        ++playersScore;
-        console.log (`Draw \n AI score is - ${computersScore} and your Score is - ${playersScore}`);
-    } else if (playersChoice == "rock" && computersChoice == "paper") {
-        ++computersScore;
-        console.log (`You Lose! Paper beats Rock \n AI score is - ${computersScore} ,and your score is - ${playersScore}`);
-    } else if (computersChoice == "rock" && playersChoice == "paper") {
-        ++playersScore;
-        console.log (`You Won! Paper beats Rock \n AI score is - ${computersScore} ,and your score is - ${playersScore}`);
-    } else if (playersChoice == "rock" && computersChoice == "scissors") {
-        ++playersScore;
-        console.log(`You Won! Rock beats Scissors \n AI score is - ${computersScore} ,and your score is - ${playersScore}`);
-    } else if (computersChoice == "rock" && playersChoice == "scissors") {
-        ++computersScore;
-        console.log(`You Lost! Rock beats Scissors \n AI score is - ${computersScore} ,and your score is - ${playersScore}`);
-    } else if (playersChoice == "scissors" && computersChoice == "paper") {
-        ++playersScore;
-        console.log(`You Won! Scissors beat Paper \n AI score is - ${computersScore} ,and your score is - ${playersScore}`);
-    } else if (computersChoice == "scissors" && playersChoice == "paper") {
-        ++computersScore;
-        console.log(`You Lost! Scissors beat Paper \n AI score is - ${computersScore} ,and your score is - ${playersScore}`); 
+        showRoundResult()
+        resultMessage = `Draw! AI — ${computersChoice} and Player — ${playersChoice}`;
     } 
+    if (playersChoice == 'rock' && computersChoice == 'paper' ||
+        computersChoice == 'rock' && playersChoice == 'scissors' ||
+        computersChoice == 'scissors' && playersChoice == 'paper') {
+        ++computersScore;
+        showRoundResult()
+        resultMessage = `You Lost! AI — ${computersChoice} ,and Player — ${playersChoice}`;
+    } 
+    if (computersChoice == 'rock' && playersChoice == 'paper' ||
+        playersChoice == 'rock' && computersChoice == 'scissors' ||
+        playersChoice == 'scissors' && computersChoice == 'paper') {
+        ++playersScore;
+        showRoundResult()
+        resultMessage = `You Won! AI — ${computersChoice} ,and Player — ${playersChoice}`;
+    }
+    paragraph.textContent = resultMessage;
+    ++counterOfRounds;
+    roundCounterSpan.textContent = counterOfRounds;
 }
 gameSession(playersChoice, computersChoice)
-}
 
-function gameOfFive () {
-    while (playersScore != 5 && computersScore != 5) {
-        game()
-}
-console.log (`the final score is: AI = ${computersScore} and player = ${playersScore} `);
-playersScore = 0;
-computersScore = 0;
-}
+function showFinalResult () {
 
-/**  ---- Можно добавить логику ниже, если хочется  ----
-
-*   if (computersScore > playersScore) {
-*         console.log("You lost in a best of 5");
-*     } else if (computersScore < playersScore) {
-*         console.log("You won in a best of 5. Congrats!");
-*     } else {
-*        console.log("It's a draw you should try again")
-*    }
-    
-*/
+    if (computersScore > playersScore) {
+    finalResult.textContent = 'You LOST';
+    finalResult.style.color = 'red';
+    } else if (computersScore < playersScore) {
+        finalResult.textContent = 'You WON';
+        finalResult.style.color = 'green';
+        } else {
+            finalResult.textContent = 'It\'s a DRAW';
+            finalResult.style.color = 'gray';
+        }
+}
+if (playersScore === 5 || computersScore === 5) showFinalResult()
+} 
